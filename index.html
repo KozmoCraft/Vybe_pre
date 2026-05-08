@@ -1,1 +1,343 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <title>Pre-Register | Vybe Campus</title>
+    
+    <!-- Typography -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet"/>
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind & Confetti -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ["Plus Jakarta Sans", "sans-serif"], headline: ["Plus Jakarta Sans", "sans-serif"] },
+                    colors: { brand: '#e31837', surface: '#fbf9f8' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 24; }
+        body { background-color: #fbf9f8; min-height: max(884px, 100dvh); }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); }
+        @keyframes pulse-glow { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 0.8; } }
+        .animate-glow { animation: pulse-glow 4s ease-in-out infinite; }
+    </style>
+</head>
+<body class="font-sans text-slate-800 flex flex-col selection:bg-brand/20 selection:text-brand relative overflow-x-hidden">
 
+    <!-- Background Art -->
+    <div class="fixed inset-0 pointer-events-none -z-10">
+        <div class="absolute -top-20 -left-20 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full bg-brand/10 blur-[100px] animate-glow"></div>
+        <div class="absolute bottom-10 -right-20 w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full bg-orange-500/5 blur-[100px] animate-glow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 md:p-8 w-full max-w-6xl mx-auto z-10">
+        
+        <div class="w-full bg-white rounded-[3rem] shadow-2xl shadow-brand/5 overflow-hidden flex flex-col md:flex-row min-h-[700px] border border-white/50 relative">
+            
+            <!-- Left Side: Branding -->
+            <section class="w-full md:w-[45%] bg-[#f8eded] p-10 md:p-16 flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-brand/10 rounded-full blur-3xl"></div>
+                <div class="relative z-10 text-center md:text-left">
+                    <img class="h-16 w-auto mx-auto md:mx-0 mb-10 drop-shadow-sm" alt="Vybe Logo" src="https://caias.vybe.net.in/vybe_logo.png" onerror="this.style.display='none';"/>
+                    
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 text-brand font-bold text-[10px] uppercase tracking-widest mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span> Official Launch Soon
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-6xl font-black tracking-tight leading-tight text-slate-900 mb-6 font-headline">
+                        Skip the line.<br/>
+                        <span class="text-brand">Secure your spot.</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 font-medium leading-relaxed max-w-sm mx-auto md:mx-0">
+                        Pre-register now to create your account early. Get access to exclusive early-bird rewards on your first orders.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Right Side: Registration / Success Flow -->
+            <section class="w-full md:w-[55%] bg-white p-8 md:p-16 flex flex-col justify-center relative">
+                
+                <div id="prereg-form-container" class="max-w-md mx-auto w-full transition-all duration-500">
+                    <header class="mb-8 text-center md:text-left">
+                        <h2 class="text-3xl font-black text-slate-900 mb-2 font-headline">Pre-Registration</h2>
+                        <p class="text-slate-500 font-medium text-sm">Services go live on Monday.</p>
+                    </header>
+
+                    <div id="msgBox" class="hidden p-4 mb-6 rounded-xl text-sm font-bold text-center border"></div>
+
+                    <form id="prereg-form" class="space-y-5">
+                        
+                        <!-- Name -->
+                        <div class="space-y-1.5">
+                            <label class="block text-[10px] font-bold tracking-widest text-slate-500 uppercase px-1">Full Name</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
+                                <input id="fullname" type="text" required placeholder="John Doe" class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 focus:bg-white focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all text-sm font-medium"/>
+                            </div>
+                        </div>
+
+                        <!-- College Email -->
+                        <div class="space-y-1.5">
+                            <label class="block text-[10px] font-bold tracking-widest text-slate-500 uppercase px-1">College Email</label>
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">alternate_email</span>
+                                <input id="email" type="email" required placeholder="name@caias.in" class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 focus:bg-white focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all text-sm font-medium"/>
+                            </div>
+                        </div>
+                        
+                        <!-- WhatsApp -->
+                        <div class="space-y-1.5">
+                            <label class="block text-[10px] font-bold tracking-widest text-slate-500 uppercase px-1">WhatsApp Number</label>
+                            <div class="relative flex items-center">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">+91</span>
+                                <input id="phone" type="tel" required placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 focus:bg-white focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all text-sm font-medium"/>
+                            </div>
+                        </div>
+
+                        <!-- Verify Button -->
+                        <div class="pt-2">
+                            <button type="button" id="verify-btn" class="w-full bg-slate-100 text-slate-600 font-bold py-4 rounded-2xl hover:bg-slate-200 active:scale-95 transition-all border border-slate-200 flex justify-center items-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">verified_user</span> Send Verification Codes
+                            </button>
+                        </div>
+
+                        <!-- OTP Section (Hidden initially) -->
+                        <div id="otp-container" class="space-y-5 hidden pt-4 border-t border-slate-100 mt-4">
+                            <div>
+                                <label class="block text-[10px] font-bold tracking-widest text-slate-500 uppercase px-1 mb-2 text-center md:text-left">Email OTP</label>
+                                <div class="grid grid-cols-6 gap-2">
+                                    <input class="e-otp w-full h-12 bg-slate-50 text-center font-bold text-lg border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="e-otp w-full h-12 bg-slate-50 text-center font-bold text-lg border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="e-otp w-full h-12 bg-slate-50 text-center font-bold text-lg border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="e-otp w-full h-12 bg-slate-50 text-center font-bold text-lg border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="e-otp w-full h-12 bg-slate-50 text-center font-bold text-lg border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="e-otp w-full h-12 bg-slate-50 text-center font-bold text-lg border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold tracking-widest text-emerald-500 uppercase px-1 mb-2 text-center md:text-left">WhatsApp OTP</label>
+                                <div class="grid grid-cols-6 gap-2">
+                                    <input class="p-otp w-full h-12 bg-emerald-50 text-center font-bold text-lg border border-emerald-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="p-otp w-full h-12 bg-emerald-50 text-center font-bold text-lg border border-emerald-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="p-otp w-full h-12 bg-emerald-50 text-center font-bold text-lg border border-emerald-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="p-otp w-full h-12 bg-emerald-50 text-center font-bold text-lg border border-emerald-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="p-otp w-full h-12 bg-emerald-50 text-center font-bold text-lg border border-emerald-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                    <input class="p-otp w-full h-12 bg-emerald-50 text-center font-bold text-lg border border-emerald-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Set Password for Monday -->
+                            <div class="space-y-1.5 pt-4">
+                                <label class="block text-[10px] font-bold tracking-widest text-slate-500 uppercase px-1">Set Your Password</label>
+                                <p class="text-xs text-slate-400 font-medium px-1 mb-2">You will use this to log in when services start.</p>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
+                                    <input id="password" type="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 pl-12 pr-4 focus:bg-white focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all text-sm font-medium"/>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-brand text-white py-4 rounded-full font-bold text-lg shadow-xl shadow-brand/30 hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 mt-6">
+                                Confirm Pre-Registration <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- SUCCESS BANNER (Hidden initially) -->
+                <div id="success-banner" class="hidden flex-col items-center justify-center text-center space-y-6 py-12 px-4 transition-all duration-500 opacity-0 scale-95">
+                    <div class="w-28 h-28 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
+                        <span class="material-symbols-outlined text-6xl">check_circle</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-black text-slate-900 font-headline tracking-tight">You're on the list!</h2>
+                    <p class="text-lg text-slate-600 font-medium max-w-md">
+                        Thank you for pre-registering. We have sent an exclusive early-bird reward directly to your WhatsApp.
+                    </p>
+                    <div class="bg-brand/5 border border-brand/20 p-6 rounded-3xl w-full max-w-sm mt-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-brand/10 rounded-full blur-2xl"></div>
+                        <span class="material-symbols-outlined text-brand text-3xl mb-2">rocket_launch</span>
+                        <h3 class="font-black text-xl text-slate-900 mb-1">Get Ready</h3>
+                        <p class="text-sm font-bold text-brand uppercase tracking-widest">Services online from Monday</p>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE_URL = "https://caias-pre.vybe.net.in";
+
+        // Generates SHA-256 payload hash and sets X-Payload-Hash header
+        async function secureFetch(url, payload) {
+            const FRONTEND_SECRET = 'vybe_secure_hash_2026';
+            
+            if (payload.password) {
+                const passBuffer = new TextEncoder().encode(payload.password);
+                const passHashBuffer = await crypto.subtle.digest('SHA-256', passBuffer);
+                payload.password = Array.from(new Uint8Array(passHashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+            
+            const finalPayloadString = JSON.stringify(payload);
+            
+            const encoder = new TextEncoder();
+            const dataBuffer = encoder.encode(finalPayloadString + FRONTEND_SECRET);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const signature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            return fetch(url, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'ngrok-skip-browser-warning': 'true',
+                    'X-Payload-Hash': signature 
+                },
+                body: finalPayloadString
+            });
+        }
+
+        function showMessage(text, type = 'error') {
+            const box = document.getElementById('msgBox');
+            box.innerText = text;
+            box.style.display = 'block';
+            box.className = type === 'error' 
+                ? 'p-4 mb-6 rounded-xl text-sm font-bold text-center border bg-red-50 text-red-600 border-red-200'
+                : 'p-4 mb-6 rounded-xl text-sm font-bold text-center border bg-emerald-50 text-emerald-700 border-emerald-200';
+            setTimeout(() => { box.style.display = 'none'; }, 5000);
+        }
+
+        function setupOtpInputs(inputs) {
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    // Forcefully strip out non-numeric characters in case of bad keyboard input
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && e.target.value === '' && index > 0) inputs[index - 1].focus();
+                });
+                
+                // INTELLIGENT PASTE: Properly maps a pasted 6-digit number across all boxes
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    // Extract text, strip all letters/spaces, keeping only numbers
+                    const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, ''); 
+                    let currIdx = index;
+                    for (let i = 0; i < pastedData.length; i++) {
+                        if (currIdx < inputs.length) {
+                            inputs[currIdx].value = pastedData[i];
+                            currIdx++;
+                        }
+                    }
+                    // Focus the last filled box
+                    const focusIndex = Math.min(currIdx, inputs.length - 1);
+                    inputs[focusIndex].focus();
+                });
+            });
+        }
+        
+        setupOtpInputs(document.querySelectorAll('.e-otp'));
+        setupOtpInputs(document.querySelectorAll('.p-otp'));
+
+        function getOtpValue(className) {
+            return Array.from(document.querySelectorAll(className)).map(i => i.value.trim()).join('');
+        }
+
+        const verifyBtn = document.getElementById('verify-btn');
+        verifyBtn.onclick = async () => {
+            // FIX: Force lowercase immediately so it perfectly matches the confirmation payload
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const phoneRaw = document.getElementById('phone').value.trim();
+            
+            if (!email.endsWith('@caias.in')) return showMessage('Must use a valid @caias.in email.', 'error');
+            if (phoneRaw.length !== 10) return showMessage('Enter a valid 10-digit number.', 'error');
+            
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">refresh</span> Processing...';
+
+            try {
+                const response = await secureFetch(`${API_BASE_URL}/send-otps`, { 
+                    email: email, 
+                    phone: "91" + phoneRaw 
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Codes sent to Email & WhatsApp!', 'success');
+                    document.getElementById('otp-container').classList.remove('hidden');
+                    verifyBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">refresh</span> Resend Codes';
+                    verifyBtn.disabled = false;
+                } else {
+                    showMessage(data.message, 'error');
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">verified_user</span> Send Verification Codes';
+                }
+            } catch (error) {
+                showMessage('Connection error.', 'error');
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">verified_user</span> Send Verification Codes';
+            }
+        };
+
+        document.getElementById('prereg-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const emailOtp = getOtpValue('.e-otp');
+            const phoneOtp = getOtpValue('.p-otp');
+            
+            if (emailOtp.length !== 6 || phoneOtp.length !== 6) return showMessage('Please complete both OTPs.', 'error');
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">refresh</span> Confirming...';
+            btn.disabled = true;
+
+            const payload = {
+                fullname: document.getElementById('fullname').value.trim(),
+                email: document.getElementById('email').value.trim().toLowerCase(),
+                password: document.getElementById('password').value,
+                email_otp: emailOtp,
+                phone_otp: phoneOtp
+            };
+
+            try {
+                const response = await secureFetch(`${API_BASE_URL}/preregister-confirm`, payload);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('prereg-form-container').classList.add('hidden');
+                    const banner = document.getElementById('success-banner');
+                    banner.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        banner.classList.remove('opacity-0', 'scale-95');
+                        banner.classList.add('opacity-100', 'scale-100');
+                        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#e31837', '#10b981', '#ffffff'] });
+                    }, 50);
+                    
+                } else {
+                    showMessage(data.message, 'error');
+                    btn.innerHTML = origHtml;
+                    btn.disabled = false;
+                }
+            } catch (error) { 
+                showMessage('Registration failed. Server error.', 'error'); 
+                btn.innerHTML = origHtml;
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
